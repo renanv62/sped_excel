@@ -1,0 +1,342 @@
+<ContentNavigationDrawer>:
+    ScrollView:
+        MDList:
+            OneLineListItem:
+                text: "Exportação Simples Excel"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "main_screen_activity"
+            OneLineListItem:
+                text: "Gráficos"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "bi_init_screen_activity"
+            OneLineListItem:
+                text: "Cálculo"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "calc_init_screen_activity"
+Screen:
+    MDTopAppBar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 0
+        #zorder: 10
+        title: "My App"
+        md_bg_color: 0.827, 0.757, 0.824, 1
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+    MDNavigationLayout:
+        x: toolbar.height
+        size_hint_y: 1.0 - toolbar.height/root.height
+        ScreenManager:
+            id: screen_manager
+            Screen:
+                name: "main_screen_activity"
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    #pos_hint: {"top": 0.9}
+                    canvas.before:
+                        Color:
+                            rgba: 147, 145, 150, 1  # Cor de fundo (cinza)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    MDBoxLayout:
+                        orientation:'horizontal'
+                        MDFlatButton:
+                            halign: 'center'
+                            text:'EFD ICMS'
+                            size_hint: (0.5,1)
+                            on_press: app.call_efd_icms('0')
+                        MDFlatButton:
+                            halign: 'center'
+                            text: 'EFD PIS'
+                            size_hint: (0.5,1)
+                            on_press: app.call_efd_pis('0')
+                    MDBoxLayout:
+                        orientation:'horizontal'
+                        MDFlatButton:
+                            halign: 'center'
+                            text:'ECD ICMS'
+                            size_hint: (0.5,1)
+                            on_press: app.call_ecd_icms('0')
+                        MDFlatButton:
+                            halign: 'center'
+                            text: 'ECD PIS'
+                            size_hint: (0.5,1)
+                            on_press: app.call_ecd_pis('0')
+            Screen:
+                name: "bi_init_screen_activity"
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    #pos_hint: {"top": 0.9}
+                    canvas.before:
+                        Color:
+                            rgba: 147, 145, 150, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    MDBoxLayout:
+                        orientation:'horizontal'
+                        size_hint_y: 0.9
+                        MDFlatButton:
+                            halign: 'center'
+                            text:'EFD ICMS'
+                            size_hint: (0.5,1)
+                            on_press: app.call_efd_icms('1')
+                        MDFlatButton:
+                            halign: 'center'
+                            text: 'EFD PIS'
+                            size_hint: (0.5,1)
+                            on_press: app.call_efd_pis('1')
+                    MDBoxLayout:
+                        orientation:'horizontal'
+                        size_hint_y: 1.1
+                        MDFlatButton:
+                            halign: 'center'
+                            text:'ECD ICMS'
+                            size_hint: (0.5,1)
+                            on_press: app.call_ecd_icms('1')
+                        MDFlatButton:
+                            halign: 'center'
+                            text: 'ECD PIS'
+                            size_hint: (0.5,1)
+                            #on_press: screen_manager.current = "scr 3"
+                            on_press: app.call_ecd_pis('1')
+            Screen:
+                name: 'scr 3'
+                id: scr_3_screen
+
+                # general layout
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    id: boxLayout_up_scr3
+                    # layout left (show items)
+                    MDBoxLayout:
+                        id: layout_to_show_LF
+                        orientation: 'horizontal'
+                        size_hint: (.75,1)
+                    # layout right (list items)
+                    MDBoxLayout:
+                        id: layout_to_list_RI
+                        orientation: 'vertical'
+                        size_hint: (.25,1)
+                        canvas.before:
+                            Color:
+                                rgba: 1,1,0,1 # CHOOSE COLOR
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        MDBoxLayout: # PARTE CIMA OPCOES
+                            id: layout_to_list_UPSIDE
+                            orientation: 'vertical'
+                            size_hint: (1,.3)
+                            AnchorLayout: # first to select reg
+                                size_hint: (1,.2)
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    size_hint: None, None
+                                    size: self.minimum_size
+                                    MDFlatButton:
+                                        id: list_keys_btn
+                                        halign: 'center'
+                                        valign: 'center'
+                                        pos_hint: {"center_x":.5,"center_y":.5}
+                                        text: 'Selecione o Registro'
+                                        on_release: app.list_keysDropdown_open()
+                            AnchorLayout: # second to select bar chart
+                                name: "anchor_axes_layout"
+                                size_hint: (1,.2)
+                                canvas.before:
+                                    Color:
+                                        rgba: 0,0,0,.3
+                                    Line:
+                                        width: 1  # Largura da borda
+                                        points: [self.x, self.top, self.x + self.width, self.top]  # Linha superior
+                                    Line:
+                                        width: 1  # Largura da borda
+                                        points: [self.x, self.y, self.x + self.width, self.y] # linha inferior
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    #size_hint: None, None
+                                    #size: self.minimum_size
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_xAxis_1
+                                        text: 'Categ/Data'
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.xAxis_option_1(1)#number_type
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_yAxis_1
+                                        text: "Opção 1"
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.yAxis_option(1)#number_type
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_yAxis_1A
+                                        text: 'Opção 2'
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.yAxis_option_2("1A")#number_type
+                                    MDFlatButton:
+                                        text: "Gráfico Barra"
+                                        pos_hint: {"center_y": .5}
+                                        on_press: app.create_bar_chart()
+                            AnchorLayout: # third to select the line chart
+                                size_hint: (1,.2)
+                                canvas.before:
+                                    Color:
+                                        rgba: 0,0,0,.3
+                                    #Line:
+                                        #width: 1  # Largura da borda
+                                        #points: [self.x, self.top, self.x + self.width, self.top]  # Linha superior
+                                    Line:
+                                        width: 1  # Largura da borda
+                                        points: [self.x, self.y, self.x + self.width, self.y] # linha inferior
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_xAxis_2
+                                        text: "Categ/Data"
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.xAxis_option_1(2)#number_type
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_yAxis_2
+                                        text: "Opção 1"
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.yAxis_option(2)#number_type
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_yAxis_2A
+                                        text: "Opção 2"
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.yAxis_option_2("2A")#number_type
+                                    MDFlatButton:
+                                        text: "Gráfico Linha"
+                                        pos_hint: {"center_y": .5}
+                                        on_press: app.create_line_chart()
+                            AnchorLayout: # four to select the pizza chart
+                                size_hint: (1,.2)
+                                canvas.before:
+                                    Color:
+                                        rgba: 0,0,0,.3
+                                    Line:
+                                        width: 1  # Largura da borda
+                                        points: [self.x, self.y, self.x + self.width, self.y] # linha inferior
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_xAxis_3
+                                        text: "Categoria"
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.xAxis_option_1(3)#number_type
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_yAxis_3
+                                        text: "Opção 1"
+                                        pos_hint: {"center_y": .5}
+                                        on_release: app.yAxis_option(3)#number_type
+                                    #MDFlatButton:
+                                        #id: layout_to_list_btn_yAxis_3A
+                                        #text: "Opção 2"
+                                        #pos_hint: {"center_y": .5}
+                                        #on_release: app.yAxis_option_2("3A")#number_type
+                                    MDFlatButton:
+                                        text: "Gráfico Pizza"
+                                        pos_hint: {"center_y": .5}
+                                        on_press: app.create_pizza_chart()
+                            AnchorLayout: # five to select the table chart
+                                size_hint: (1,.2)
+                                canvas.before:
+                                    Color:
+                                        rgba: 0,0,0,.3
+                                    Line:
+                                        width: 1  # Largura da borda
+                                        points: [self.x, self.y, self.x + self.width, self.y] # linha inferior
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_xAxis_4
+                                        text: "Categoria"
+                                        pos_hint: {"center_y":.5}
+                                        on_release: app.xAxis_option_1(4)#number_type
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_yAxis_4
+                                        text: "Opção 1"
+                                        pos_hint: {"center_y":.5}
+                                        on_release: app.yAxis_option(4)#number_type
+                                    MDFlatButton:
+                                        id: layout_to_list_btn_yAxis_4A
+                                        text: "Opção 2"
+                                        pos_hint: {"center_y":.5}
+                                        on_release: app.yAxis_option_2("4A")#number_type
+                                    MDFlatButton:
+                                        text: "Tabela"
+                                        pos_hint: {"center_y": .5}
+                        MDBoxLayout: #PARTE DE BAIXO, LISTA DINAMICA
+                            orientation:'vertical'
+                            size_hint: (1,.7)
+                            ScrollView:
+                                do_scroll_y: True
+                                MDGridLayout:
+                                    id: list_charts_added
+                                    cols:1
+                                    adaptive_height: True
+                                    row_default_height:100
+                                    size_hint_x: 1
+
+                AnchorLayout:
+                    id: my_popup
+                    height: 0
+                    opacity: 0
+                    size_hint: (1,1)
+                    canvas.before:
+                        Color:
+                            rgba: 0,0,0,.5 # shadow
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    MDBoxLayout:
+                        orientation:'vertical'
+                        id: my_popup_content
+                        size_hint: (.5,.5)
+                        canvas.before:
+                            Color:
+                                rgba: 1,1,1,1 # white
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        MDBoxLayout: #updown layout for dropdown menus
+                            id: popup_content_up
+                            orientation: 'vertical'
+                            size_hint: (1,.35)
+                            padding: 5
+                        MDBoxLayout: # for date choose
+                            id: popup_content_middle
+                            orientation: "horizontal"
+                            size_hint: (1,.45)
+                            padding: 5
+                        AnchorLayout: # buttons update and close on popupdown_content_mdgrid
+                            #id: popup_content_down
+                            orientation: 'horizontal'
+                            size_hint: (1,.2)
+                            padding: 5
+                            canvas.before:
+                                Color:
+                                    rgba: 0,1,1,0 # light blue
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            MDBoxLayout:
+                                id: popupdown_content_mdgrid
+                                orientation: "horizontal"
+                                size_hint: None, None
+                                size: self.minimum_size
+                                pos_hint: {"center_x": 0.5}
+            Screen:
+                name: "calc_init_screen_activity"
+                AnchorLayout:
+                    MDLabel:
+                        text: "Aplicações Futuras"
+                        pos_hint: {"center_x": .5, "center_y": .5}
+        MDNavigationDrawer:
+            id: nav_drawer
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
